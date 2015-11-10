@@ -5,7 +5,7 @@ require '../lib/district'
 class DistrictTest<Minitest::Test
 
   def test_district_class_exist
-    assert District.new(name)
+    assert District.new({:name => "ACADEMY 20"})
   end
 
   def test_district_passes_name
