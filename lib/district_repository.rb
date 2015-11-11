@@ -1,31 +1,33 @@
 require_relative 'district'
+require 'csv'
 
 class DistrictRepository
 
-  attr_reader :district
+  attr_reader :districts
 
   def initialize
-    @district = []
+    @districts = []
   end
 
   def hash_to_instance(hash_array)
     hash_array.each do |hash|
-      @district << District.new(hash)
+      @districts << District.new(hash)
     end
   end
 
   def find_by_name(name)
-         #each looked into  == name
+    districts.find { |district| district.name == name.upcase }
   end
-  #returns nil or instance of District
-
-
 
   def find_all_matching
+    districts.select { |district| district.name.match(/#{name.upcase}/)}
     #returns [] or one/more matches (name fragment)
   end
 
-  def load_data
-    #skip
+  def load_data(csv_file)
+    file_path = File.join('../data/', csv_file)
+    csv = CSV.open file_path, headers: true, header_converters: :symbol
+    hash_array = csv.map(&:to_hash)
+    hash_to_instance(hash_array)
   end
 end
