@@ -21,16 +21,23 @@ class DistrictRepositoryTest < Minitest::Test
   def test_hash_to_instance_can_pull_in_array_of_hashes
     dr = DistrictRepository.new
     dr.load_data('Kindergartners in full-day program.csv')
-    dr.hash_to_instance([{:location => "ACADEMY 20"}, {:location => "DOUGLAS COUNTY"}])
-    assert_equal "ACADEMY 20", dr.districts[0].name
-    assert_equal "DOUGLAS COUNTY", dr.districts[1].name
+    assert_equal "COLORADO", dr.districts[0].name
+    assert_equal "ACADEMY 20", dr.districts[15].name
   end
 
   def test_find_by_name
+    skip
     dr = DistrictRepository.new
-    dr.
+    dr.load_data('Kindergartners in full-day program.csv')
+    assert_equal "ACADEMY 20", dr.find_by_name("ACADEMY 20")
+  end
 
-    assert_equal
+  def test_find_all_matching
+    
+    dr = DistrictRepository.new
+    dr.load_data('Kindergartners in full-day program.csv')
+    assert_equal [], dr.find_all_matching("%")
+    assert_equal "ACADEMY 20", dr.find_all_matching("ACA")
   end
 
 end
