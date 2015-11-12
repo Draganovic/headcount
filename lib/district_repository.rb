@@ -26,6 +26,11 @@ class DistrictRepository
   end
 
   def load_data(csv_file)
+    # load_data({:enrollment => {:kindergarten => "filepath...."}})
+    # Each repository (Enrollment, Testing, Economic) needs to load
+    # its own data...
+    # EnrollmentRepository: {:enrollment => {]}}
+
     file_path = File.join('./data/', csv_file)
     csv = CSV.open file_path, headers: true, header_converters: :symbol
     hash_array = csv.map(&:to_hash)
