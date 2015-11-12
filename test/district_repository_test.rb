@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require '../lib/district_repository'
+require './lib/district_repository'
 require 'pry'
 
 class DistrictRepositoryTest < Minitest::Test
@@ -26,18 +26,17 @@ class DistrictRepositoryTest < Minitest::Test
   end
 
   def test_find_by_name
-    skip
     dr = DistrictRepository.new
     dr.load_data('Kindergartners in full-day program.csv')
-    assert_equal "ACADEMY 20", dr.find_by_name("ACADEMY 20")
+    assert_equal "ACADEMY 20", dr.find_by_name("ACADEMY 20").name
   end
 
   def test_find_all_matching
-    
+
     dr = DistrictRepository.new
     dr.load_data('Kindergartners in full-day program.csv')
     assert_equal [], dr.find_all_matching("%")
-    assert_equal "ACADEMY 20", dr.find_all_matching("ACA")
+    assert_equal 11, dr.find_all_matching("ACA").count
   end
 
 end

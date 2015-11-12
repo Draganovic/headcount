@@ -26,10 +26,9 @@ class DistrictRepository
   end
 
   def load_data(csv_file)
-    file_path = File.join('../data/', csv_file)
+    file_path = File.join('./data/', csv_file)
     csv = CSV.open file_path, headers: true, header_converters: :symbol
     hash_array = csv.map(&:to_hash)
-    binding.pry
     hash_to_instance(hash_array)
   end
 end

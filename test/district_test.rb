@@ -1,6 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
-require '../lib/district'
+require './lib/district'
 
 class DistrictTest<Minitest::Test
 
