@@ -1,4 +1,5 @@
 require "csv"
+require_relative 'enrollment'
 class EnrollmentRepository
 
   attr_reader :enrollments
@@ -8,17 +9,13 @@ class EnrollmentRepository
   end
 
   def load_data(enrollment_data)
-    # Get path to kindergarten file out of the data hash
     kindergarten_file = enrollment_data[:enrollment][:kindergarten]
-
-    # Open the csv that the kindergarten file points to
-
     csv = CSV.open(kindergarten_file, headers: true, header_converters: :symbol)
-    puts "GOT CSV: #{csv}"
-
-    csv.group_by do |row|
+    hash_array = csv.group_by do |row|
       row[:location]
     end
+
+    hash_to_instance(organize_enrollment_data(hash_array))
 
     # CSV rows contain info for 1 District for
     # one year
@@ -32,5 +29,25 @@ class EnrollmentRepository
     # e = Enrollment.new({:name => "ACADEMY 20",
     #        :kindergarten_participation =>
     #              {2010 => 0.3915, 2011 => 0.35356, 2012 => 0.2677})
+  end
+
+  def hash_to_instance(hash_array)
+    hash_array.each do |hash|
+      @enrollments << Enrollment.new(hash)
+    end
+  end
+
+  private
+
+  def organize_enrollment_data(hash_array)
+    hash_array.map do |location, rows|
+      location_hash = {}
+      location_hash[:name] = location
+      location_hash[:kindergarten_participation] = rows.reduce({}) do |data_hash, row|
+        data_hash[row[:timeframe]] = row[:data]
+        data_hash
+      end
+      location_hash
+    end
   end
 end

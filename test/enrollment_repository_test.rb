@@ -26,8 +26,20 @@ class EnrollmentRepositoryTest < Minitest::Test
         :kindergarten => "./data/Kindergartners in full-day program.csv"
       }
     })
-    puts result
+    # puts result
     assert er.enrollments.count > 0
   end
 
+
+  def test_hash_to_instance_can_pull_in_array_of_hashes
+    er = EnrollmentRepository.new
+    er.load_data({
+      :enrollment => {
+        :kindergarten => "./data/Kindergartners in full-day program.csv"
+      }
+    })
+    assert_equal "COLORADO", er.enrollments[0].name
+    assert_equal "BETHUNE R-5", er.enrollments[15].name
+  end
+attr_writer :attr_names
 end
